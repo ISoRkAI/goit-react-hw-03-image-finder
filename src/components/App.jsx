@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
 import Modal from './Modal/Modal';
-import { ToastContainer } from 'react-toastify';
+
 export default class App extends Component {
   state = {
     request: '',
@@ -61,11 +62,13 @@ export default class App extends Component {
       largeImageURL: largeImageURL,
     }));
   };
+
   render() {
     const { pictures, isLoading, totalHits, showModal, largeImageURL } =
       this.state;
     const length = pictures.length !== 0;
     const maxLength = pictures.length !== totalHits;
+
     return (
       <>
         <Searchbar onSubmit={this.hendleFormSubmit} />
@@ -74,11 +77,9 @@ export default class App extends Component {
         {!isLoading && length && maxLength && (
           <Button onLoadMore={this.onLoadMore} />
         )}
-
         {showModal && (
           <Modal largeImageURL={largeImageURL} onClose={this.toggleModal} />
         )}
-
         <ToastContainer theme="colored" position="top-right" autoClose={1500} />
       </>
     );

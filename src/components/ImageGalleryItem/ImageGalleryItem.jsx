@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import css from './ImageGalleryItem.module.css';
+
 const ImageGalleryItem = ({ pictures, toggleModal }) => {
   return (
     <>
@@ -19,4 +21,16 @@ const ImageGalleryItem = ({ pictures, toggleModal }) => {
     </>
   );
 };
+
+ImageGalleryItem.prototype = {
+  pictures: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+    })
+  ),
+  onDeleteContact: PropTypes.func.isRequired,
+};
+
 export default ImageGalleryItem;
