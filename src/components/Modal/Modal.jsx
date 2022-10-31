@@ -14,14 +14,14 @@ class Modal extends Component {
   }
 
   handleKeyDown = e => {
-    if (e.code === 'Escape') {
+    if (e.currentTarget === e.target || e.code === 'Escape') {
       this.props.onClose();
     }
   };
 
   render() {
     return createPortal(
-      <div className={css.overlay}>
+      <div className={css.overlay} onClick={this.handleKeyDown}>
         <div className={css.modal}>
           <img src={this.props.largeImageURL} alt="" />
         </div>

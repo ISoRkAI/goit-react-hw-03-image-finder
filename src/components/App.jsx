@@ -5,6 +5,7 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
 import Modal from './Modal/Modal';
+import imgAPI from 'api/Requests';
 
 export default class App extends Component {
   state = {
@@ -30,29 +31,23 @@ export default class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
+    const { request, page, perPage } = this.state;
     if (
       prevState.request !== this.state.request ||
       prevState.page !== this.state.page
     ) {
-      this.setState({ isLoading: true });
-      const KAY = '30063209-f9a5f01cd42377ca093fcf5d5';
-      fetch(
-        `https://pixabay.com/api/?q=${this.state.request}&page=${this.state.page}&key=${KAY}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`
-      )
-        .then(res => res.json())
-        .then(pictures => {
-          if (prevState.request !== this.state.request) {
-            this.setState({
-              pictures: [...pictures.hits],
-              totalHits: pictures.totalHits,
-            });
-            return;
-          }
+      imgAPI.fetchData(request, page, perPage).then(pictures => {
+        if (prevState.request !== this.state.request) {
           this.setState({
-            pictures: [...prevState.pictures, ...pictures.hits],
+            pictures: [...pictures.hits],
+            totalHits: pictures.totalHits,
           });
-        })
-        .finally(() => this.setState({ isLoading: false }));
+          return;
+        }
+        this.setState({
+          pictures: [...prevState.pictures, ...pictures.hits],
+        });
+      });
     }
   }
 
